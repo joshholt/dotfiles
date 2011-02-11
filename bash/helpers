@@ -1,0 +1,42 @@
+function startBuildTools() {
+  nohup abbot server 4020 &
+}
+
+function killBuildTools() {
+  kill -9 `ps -ef | grep abb | grep ruby1.9 | grep -v grep | awk '{print $2}'`
+}
+
+function rebaseAllBranchesToMaster() {
+  for i in `gb`; do
+    if [[ $i != '*' && $i != 'master' && $i != 'optimus' && $i != 'r453' ]]; then
+      git co $i && git rebase master
+    fi
+  done
+}
+
+function updateFrameworks() {
+  for in in `ls -l1 frameworks | grep -v "\(^core\|code\|excan\|nohup\|onitunes\|\)"`; do
+    echo "Entering -> frameworks/$i-------------------------------------------"
+    cd "frameworks/$i"
+    git fo && git rebase origin master
+    echo "\n"
+    cd ...
+  done
+}
+
+
+#-----------------------------------------------------------------
+# This function builds a SproutCore Project
+#
+# @Param $1 -> Your/Project/Path
+# @Param $2 -> Your Project BuildNumber or BuildName
+# @Param $3 -> Your Project Name
+#-----------------------------------------------------------------
+function buildSCProject() {
+  echo "Entering -> $1--------------------------------------------------------"
+  cd "$1"
+  ./bin/sc-build -rc --build=$2 --languages=en
+  mkdir -p /tmp/sc-builds/$3/$2
+  mv tmp/build/static /tmp/sc-builds/$3/$2/.
+  mv /tmp/sc-builds/$3/$2/static/$3/en/$2/index.html /tmp/sc-builds/$3/$2/.
+}
