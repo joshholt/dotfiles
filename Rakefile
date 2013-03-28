@@ -1,44 +1,43 @@
 require 'rake'
 require 'erb'
 
-desc "Install the dot files into user's home dir"
+desc "install the dot files into user's home directory"
 task :install do
-  apply_to_all = false
-
-  Dir['*'].each do |f|
-    next if %w[README.md Rakefile LICENSE].include? f
-
-    if File.exit?(File.join(ENV['HOME'], ".#{f.sub('.erb', '')}"))
-      if File.identical? file, File.join(ENV['HOME'], "#{f.sub('.erb','')}")
-        puts "Identical ~/.#{f.sub('.erb','')}"
-      elsif apply_to_all
-        replace_file(f)
+  replace_all = false
+  Dir['*'].each do |file|
+    next if %w[Rakefile README.rdoc LICENSE].include? file
+    
+    if File.exist?(File.join(ENV['HOME'], ".#{file.sub('.erb', '')}"))
+      if File.identical? file, File.join(ENV['HOME'], ".#{file.sub('.erb', '')}")
+        puts "identical ~/.#{file.sub('.erb', '')}"
+      elsif replace_all
+        replace_file(file)
       else
-        print "Overwrite ~/.#{f.sub('.erb','')}? [ynaq]"
+        print "overwrite ~/.#{file.sub('.erb', '')}? [ynaq] "
         case $stdin.gets.chomp
         when 'a'
-          apply_to_all = true
-          replace_file(f)
+          replace_all = true
+          replace_file(file)
         when 'y'
-          replace_file(f)
+          replace_file(file)
         when 'q'
           exit
         else
-          puts "Skipping ~/.#{f.sub('.erb','')}"
+          puts "skipping ~/.#{file.sub('.erb', '')}"
         end
       end
     else
-      link_file(f)
+      link_file(file)
     end
   end
 end
 
-def replace_file(f)
-  system %Q{rm -rf "$HOME/.#{f.sub('.erb','')}"}
-  link_file(f)
+def replace_file(file)
+  system %Q{rm -rf "$HOME/.#{file.sub('.erb', '')}"}
+  link_file(file)
 end
 
-def link_file(f)
+def link_file(file)
   if file =~ /.erb$/
     puts "generating ~/.#{file.sub('.erb', '')}"
     File.open(File.join(ENV['HOME'], ".#{file.sub('.erb', '')}"), 'w') do |new_file|
@@ -49,3 +48,4 @@ def link_file(f)
     system %Q{ln -s "$PWD/#{file}" "$HOME/.#{file}"}
   end
 end
+
