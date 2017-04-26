@@ -1,0 +1,144 @@
+source /Users/joshholt/.mutt/jellybeans.ansi
+# PATHS
+set folder = ~/.mail
+set alias_file = ~/.mutt/aliias
+set header_cache = ~/.mutt/cache/headers
+set message_cachedir = ~/.mutt/cache/bodies
+set certificate_file = ~/.mutt/certificates
+set mailcap_path = ~/.mutt/mailcap
+set tmpdir = ~/.mutt/tmp
+set signature = ~/.mutt/sig
+
+# Basic Options
+set wait_key = no
+set mbox_type = Maildir
+set timeout = 3
+set mail_check = 0
+unset move
+set delete
+unset confirmappend
+set quit
+unset mark_old
+set beep_new
+set pipe_decode
+set thorough_search
+
+# Sidebar Patch
+set sidebar_delim   = '  │'
+set sidebar_visible = yes
+set sidebar_width   = 24
+color sidebar_new color221 color233
+
+# Status Bar
+set status_chars  = " *%A"
+set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+
+# Header Options -------------------------------------
+ignore *                                # ignore all headers
+unignore from: to: cc: date: subject:   # show only these
+unhdr_order *                           # some distros order things by default
+hdr_order from: to: cc: date: subject:  # and in this order
+
+# Account Settings
+
+# Default inbox.
+set spoolfile = "+joshholt-oracle.com/INBOX"
+
+# Mailboxes to show in the sidebar
+mailboxes +joshholt-oracle.com/INBOX \
+          +joshholt-oracle.com/Sent \
+          +joshholt-oracle.com/drafts \
+          +joshholt-oracle.com/trash \
+          +temporary/search \
+
+# Other special folders
+set mbox      = "+joshholt-oracle.com/INBOX"
+set postponed = "+joshholt-oracle.com/drafts"
+
+# Index Key Bindings ---------------------------------
+bind index gg       first-entry
+bind index G        last-entry
+
+bind index R        group-reply
+bind index <tab>    sync-mailbox
+bind index <space>  collapse-thread
+
+# Ctrl-R to mark all as read
+macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
+
+# Sync email
+macro index O "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
+macro index o "<shell-escape>offlineimap -qf INBOX<enter>" "run offlineimap to sync inbox"
+
+# Saner copy/move dialogs
+macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+
+# Sidebar Navigation ---------------------------------
+bind index,pager <down>   sidebar-next
+bind index,pager <up>     sidebar-prev
+bind index,pager <right>  sidebar-open
+
+# Pager View Options ---------------------------------
+set pager_index_lines = 10 # number of index lines to show
+set pager_context = 3      # number of context lines to show
+set pager_stop             # don't go to next message automatically
+set menu_scroll            # scroll in menus
+set tilde                  # show tildes like in vim
+unset markers              # no ugly plus signs
+
+set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+alternative_order text/plain text/enriched text/html
+auto_view text/html
+# Pager Key Bindings ---------------------------------
+bind pager k  previous-line
+bind pager j  next-line
+bind pager gg top
+bind pager G  bottom
+
+bind pager R  group-reply
+
+# View attachments properly.
+bind attach <return> view-mailcap
+
+# Open URLs
+macro pager \Cu "|urlview<enter>" "call urlview to open links"
+
+# Compose View Options
+set realname = "Joshua Holt"
+set envelope_from
+set sig_dashes
+set edit_headers
+set fast_reply
+set askcc
+set fcc_attach
+unset mime_forward
+set forward_format = "Fwd %s"
+set forward_decode
+set attribution = "On %d, %n wrote:"
+set reply_to
+set reverse_name
+set include
+set forward_quote
+
+# Editor
+set editor = "nvim"
+
+# NotMuch
+macro index S "<enter-command>unset wait_key<enter><shell-escape>mutt-notmuch-py ~/.mail/temporary/search<enter><change-folder-readonly>+temporary/search<enter>" "search mail (using notmuch)"
+
+# Regular searching
+bind index N search-opposite
+bind pager N search-opposite
+
+# Limiting
+macro index a "<limit>all\n" "show all messages (undo limit)"
+
+# Contacts
+set query_command = "contacts -Sf '%eTOKEN%n' '%s' | sed -e 's/TOKEN/\t/g'"
+bind editor <Tab> complete-query
+bind editor ^T    complete
+
+# Drafts
+bind compose p postpone-message
+bind index p recall-message

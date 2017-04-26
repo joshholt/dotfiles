@@ -1,0 +1,10 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='/Users/joshholt/dev/hackathon/ironman/ironman/src/main/java/com/eloqua'
+let g:netrw_dirhist_2='/Users/joshholt/dev/hackathon/BulkService'
+let g:netrw_dirhist_3='/Users/joshholt/dev/AKKA_PLAYING/bulk-service'
+let g:netrw_dirhist_4='/Users/joshholt'
+let g:netrw_dirhist_5='/Users/joshholt/.local/share/profanity/chatlogs'
+let g:netrw_dirhist_6='/Users/joshholt/.vim/plugged/denite.nvim'
+let g:netrw_dirhist_7='/Users/joshholt/.vim'
+let g:netrw_dirhist_8='/Users/joshholt/.offlineimap'

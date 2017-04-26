@@ -1,0 +1,34 @@
+[general]
+ui = ttyui
+accounts = Oracle
+pythonfile = ~/.mutt/offlineimap.py
+fsync = False
+
+[Account Oracle]
+localrepository = Oracle-Local
+remoterepository = Oracle-Remote
+postsynchook   = /usr/local/bin/notmuch new
+
+[Repository Oracle-Local]
+type = Maildir
+localfolders = ~/.mail/joshholt-oracle.com
+nametrans = lambda folder: {'drafts': 'Drafts',
+                            'trash': 'Trash',
+                            'inbox': 'Inbox',
+                           }.get(folder, folder)
+
+[Repository Oracle-Remote]
+maxconnections = 1
+type = IMAP
+remotehost = stbeehive.oracle.com
+remoteport = 993
+ssl = yes
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+remoteuser = josh.holt@oracle.com
+remotepasseval = get_keychain_pass(account="josh.holt@oracle.com", server="stbeehive.oracle.com", label="FIMAP")
+realdelete = no
+nametrans = lambda folder: {'Drafts': 'drafts',
+                            'Trash': 'trash',
+                            'Inbox': 'inbox',
+                           }.get(folder, folder)
+
