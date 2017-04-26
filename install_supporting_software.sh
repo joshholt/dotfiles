@@ -5,7 +5,7 @@ brew update
 
 # Then ensure python and updated pip
 brew install python
-pip install --upgrade pip setuptoolp install --upgrade pip setuptoolss
+pip install --upgrade pip setuptools
 
 # Install offlineimap
 pip install offlineimap
@@ -29,7 +29,7 @@ sudo gem install neovim
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # Check for oh-my-zsh and install if it doesn't exist
-if [ ! -d "~/.oh-my-zsh" ] then
+if [ ! -d "~/.oh-my-zsh" ]; then
   # Install oh-my-zsh
   sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 fi
