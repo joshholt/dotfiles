@@ -11,7 +11,7 @@
 # configured here named ".notmuch".
 #
 [database]
-path=/Users/joshholt/.mail/joshholt-oracle.com
+path=/Users/jdholt/.mail/joshholt-oracle.com
 
 # User configuration
 #

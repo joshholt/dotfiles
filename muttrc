@@ -1,4 +1,4 @@
-source /Users/joshholt/.mutt/jellybeans.ansi
+source /Users/`whoami`/.mutt/jellybeans.ansi
 # PATHS
 set folder = ~/.mail
 set alias_file = ~/.mutt/aliias
